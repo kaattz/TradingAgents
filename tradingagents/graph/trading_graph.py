@@ -81,6 +81,24 @@ class TradingAgentsGraph:
         elif self.config["llm_provider"].lower() == "google":
             self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config["deep_think_llm"])
             self.quick_thinking_llm = ChatGoogleGenerativeAI(model=self.config["quick_think_llm"])
+        elif self.config["llm_provider"].lower() == "deepseek":
+            # DeepSeek uses OpenAI-compatible API
+            deepseek_api_key = self.config.get("deepseek_api_key") or os.getenv("DEEPSEEK_API_KEY")
+            deepseek_backend_url = self.config.get("deepseek_backend_url", "https://api.deepseek.com")
+            
+            if not deepseek_api_key:
+                raise ValueError("DeepSeek API key not found. Please set DEEPSEEK_API_KEY environment variable or add deepseek_api_key to config.")
+                
+            self.deep_thinking_llm = ChatOpenAI(
+                model=self.config.get("deepseek_deep_think_llm", "deepseek-reasoner"),
+                base_url=deepseek_backend_url,
+                openai_api_key=deepseek_api_key
+            )
+            self.quick_thinking_llm = ChatOpenAI(
+                model=self.config.get("deepseek_quick_think_llm", "deepseek-chat"),
+                base_url=deepseek_backend_url,
+                openai_api_key=deepseek_api_key
+            )
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
         

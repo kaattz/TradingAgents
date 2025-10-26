@@ -13,6 +13,12 @@ DEFAULT_CONFIG = {
     "deep_think_llm": "o4-mini",
     "quick_think_llm": "gpt-4o-mini",
     "backend_url": "https://api.openai.com/v1",
+    # DeepSeek settings (alternative to OpenAI)
+    "deepseek_api_key": os.getenv("DEEPSEEK_API_KEY", ""),
+    "deepseek_backend_url": "https://api.deepseek.com",
+    # DeepSeek model settings
+    "deepseek_deep_think_llm": "deepseek-reasoner",
+    "deepseek_quick_think_llm": "deepseek-chat",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
